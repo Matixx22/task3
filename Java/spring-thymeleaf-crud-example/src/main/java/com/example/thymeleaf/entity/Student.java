@@ -2,6 +2,7 @@ package com.example.thymeleaf.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 @Entity
 @Table(name = "student")
 @EqualsAndHashCode(of = {"id"})
+@NoArgsConstructor
 public class Student {
     @Transient
     private static final Logger logger = LoggerFactory.getLogger(Student.class);
@@ -33,6 +35,13 @@ public class Student {
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
+
+    public Student(String name, String email, LocalDate birthday, Address address) {
+        this.name = name;
+        this.email = email;
+        this.birthday = birthday;
+        this.address = address;
+    }
 
     @PrePersist
     private void prePersist() {
