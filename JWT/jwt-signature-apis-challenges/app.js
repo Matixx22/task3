@@ -5,6 +5,7 @@ const JWT = require('jsonwebtoken');
 const jwkToPem = require('jwk-to-pem');
 const request = require('request');
 const { exec } = require('child_process');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json()); //midleware needed to handle post request
@@ -29,7 +30,7 @@ app.post('/jwt/none', (req, res) => { //None endpoint
     if (jwt_b64_dec.header.alg == 'HS256') {
       secret_key = '885ae2060fbedcfb491c5e8aafc92cab5a8057b3d4c39655acce9d4f09280a20';
     } else if (jwt_b64_dec.header.alg == 'none') {
-      secret_key = '';
+    	res.status(400).send('None is none, you have no access')
     }
     JWT.verify(jwt_token, secret_key, { algorithms: ['none', 'HS256'], complete: true, audience: 'https://127.0.0.1/jwt/none' }, (err, decoded_token) => {
       if (err) {
